@@ -1,6 +1,7 @@
 import argparse
-import gpiozero
 import logging
+
+from utils import devices
 
 logging.basicConfig(level=logging.INFO)
 
@@ -22,7 +23,5 @@ if __name__ == '__main__':
     args = _parse_args()
     logging.info(args)
 
-    # read motor/relay setup as generic on/off output device
-    # map .on() to GPIO LOW
-    motor = gpiozero.DigitalOutputDevice(23, active_high=False)
+    motor = devices.Motor()
     motor.blink(on_time=args.on, off_time=args.off, n=args.n, background=False)

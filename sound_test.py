@@ -89,7 +89,7 @@ if __name__ == '__main__':
         fs = 44100
         data_out = sd.rec(int(args.output_duration * fs),
                           samplerate=fs,
-                          channels=1)
+                          channels=2)
         sd.wait()
 
         # write to file
