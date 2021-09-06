@@ -1,36 +1,40 @@
-import logging
+import datetime
+import PIL
+import time
 
-from luma.core.render import canvas
+from luma.core import virtual
 
 from utils import devices
 
-logging.basicConfig(level=logging.INFO)
 
-button = devices.Button(0)
-motor = devices.Motor()
-display = devices.Display()
-
-logging.info('Ready')
+def now() -> str:
+    return datetime.datetime.now().strftime('%H:%M')
 
 
 def main():
+    button = devices.Button(0)
+    motor = devices.Motor()
+    display = devices.Display()
+
+    font = PIL.ImageFont.truetype('fonts/ProggyTiny.ttf', 16)
+    term = virtual.terminal(display, font)
+
+    term.println('READY!')
+    term.println('------')
+
+    term.println('Try pressing Key1 :)')
+
     while True:
-        with canvas(display) as draw:
-            draw.rectangle(display.bounding_box, outline='white', fill='blue')
-            draw.text((30, 40),
-                      'Ready! Key1',
-                      fill='white')
+        term.println()
 
         button.wait_for_press()
-        logging.info('Ring bell')
+        start = time.time()
+        term.println(now() + ' Ring bell')
         motor.on()
 
-        with canvas(display) as draw:
-            draw.rectangle(display.bounding_box, outline='white', fill='blue')
-            draw.text((30, 80), 'Ringing!', fill='white')
-
         button.wait_for_release()
-        logging.info('Stop')
+        end = time.time()
+        term.println(now() + f' Stop ({end-start:.2f}s)')
         motor.off()
 
 
