@@ -23,7 +23,8 @@ def _make_sine(duration: float,
         amplitude (float): amplitude (ranges from -1 to 1)
         frequency (int): frequency in Hertz
         sampling_freq (float): sampling frequency in Hertz
-        save_plot (bool, optional): whether to save a plot of the first 200 samples. Defaults to False.
+        save_plot (bool, optional): whether to save a plot of the first 200 
+            samples. Defaults to False.
 
     Returns:
         Tuple[np.ndarray, float]: numpy array & sampling frequency
@@ -89,7 +90,7 @@ if __name__ == '__main__':
         fs = 44100
         data_out = sd.rec(int(args.output_duration * fs),
                           samplerate=fs,
-                          channels=2)
+                          channels=1)
         sd.wait()
 
         # write to file

@@ -4,9 +4,13 @@ import gpiozero
 from luma.core.interface.serial import spi
 from luma.lcd import device
 
+factory = gpiozero.pins.pigpio.PiGPIOFactory()
 
 class GPIO:
     MOTOR = 4
+    MOTION = 23
+    
+    SERVO1 = 18
 
     KEY1 = 21
     KEY2 = 20
@@ -83,9 +87,17 @@ class Button(gpiozero.Button):
         pins = [GPIO.KEY1, GPIO.KEY2, GPIO.KEY3]
         super().__init__(pins[num])
 
+class MotionSensor(gpiozero.MotionSensor):
+    def __init__(self):
+        super().__init__(GPIO.MOTION)
 
 class Motor(gpiozero.DigitalOutputDevice):
     """Motor/relay combo set up as generic on/off output device"""
     def __init__(self):
         # map .on() to GPIO LOW
         super().__init__(GPIO.MOTOR, active_high=False)
+        
+class Servo(gpiozero.Servo):
+    def __init__(self, num: int):
+        pins = [GPIO.SERVO1]
+        super().__init__(pins[num], pin_factory=factory)
